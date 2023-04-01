@@ -32,10 +32,7 @@ spec:
         - name: postgres-initdb
           hostPath:
             path: /todoserver/src/main/resources/init.sql
-      restartPolicy: Always
-      dnsPolicy: ClusterFirst
-      imagePullSecrets:
-        - name: regcred
+
 
 ---
 apiVersion: v1
@@ -52,4 +49,5 @@ spec:
       protocol: TCP
       port: 5432
       targetPort: 5432
+    
 

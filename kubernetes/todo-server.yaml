@@ -14,20 +14,13 @@ spec:
     spec:
       containers:
         - name: todo-server
-          image: todo_server:latest
+          image: asu2022/todoserver
           ports:
             - containerPort: 8000
           env:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres:5432/todo_db
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: todo-db-persistent-storage
-              mountPath: /var/lib/todo/db
-      volumes:
-        - name: todo-db-persistent-storage
-          persistentVolumeClaim:
-            claimName: todo-db-pvc
+
 ---
 apiVersion: v1
 kind: Service
@@ -41,17 +34,5 @@ spec:
       protocol: TCP
       port: 8000
       targetPort: 8000
-  type: ClusterIP
-  sessionAffinity: None
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: todo-db-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: standard
+      nodePort: 30200
+  type: NodePort

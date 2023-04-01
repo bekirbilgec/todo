@@ -14,15 +14,15 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: todo_app:latest
+          image: asu2022/todoapp
           ports:
             - containerPort: 8080
           env:
             - name: TODO_SERVER_URL
               value: "http://todo-server:8081/api"
-      imagePullSecrets:
-        - name: my-registry-secret
-      restartPolicy: Always
+      # imagePullSecrets:
+      #   - name: my-registry-secret
+      # restartPolicy: Always
 
 ---
 
