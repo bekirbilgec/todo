@@ -10,11 +10,11 @@ spec:
   template:
     metadata:
       labels:
-        app:  postgres
+        app: postgres
     spec:
       containers:
-      - name:  postgres
-        image:  postgres:latest
+      - name: postgres
+        image: postgres:latest
          env:
         - name: POSTGRES_USER
           valueFrom:
@@ -31,7 +31,6 @@ spec:
             configMapKeyRef:
               name: postgres-configmap
               key: postgres-dbname
-
         ports:
         - containerPort:  80
           name:  postgres

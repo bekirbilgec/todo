@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: erkut.bekirbilgec.com # Ingress servisi için kullanılacak host adı
+    http:
+      paths:
+      - path: / # İstekler "/todos" path'i altındaysa todo-app servisine yönlendirilir
+        pathType: Prefix
+        backend:
+          service:
+            name: todo-app
+            port:
+              number: 8080
+

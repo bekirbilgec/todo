@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-server
+spec:
+  selector:
+    matchLabels:
+      app: todo-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todo-server
+    spec:
+      containers:
+        - name: todo-server
+          image: todo_server:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/todo_db
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: todo-db-persistent-storage
+              mountPath: /var/lib/todo/db
+      volumes:
+        - name: todo-db-persistent-storage
+          persistentVolumeClaim:
+            claimName: todo-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-server
+spec:
+  selector:
+    app: todo-server
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
+  sessionAffinity: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: todo-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
